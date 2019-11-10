@@ -4,11 +4,10 @@ import Util from '../../../utils/utils';
 const util = new Util;
 
 class MortgageController {
-    static async calculateMortgage(req, res) {
-        const mortgageDetails = req.body;
+    static async getMortgageCalculation(req, res) {
+        const mortgageDetails = req.headers;
         try {
             const { property_value, down_payment, interest_rate, loan_term } = mortgageDetails
-            console.log(interest_rate)
             if (!property_value || !down_payment || !interest_rate || !loan_term) {
                 util.setError(500, `Please provide property_value (number), down_payment (number), interest_rate (decimal) and loan_term (years)`);
             } else {

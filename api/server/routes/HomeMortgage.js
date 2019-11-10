@@ -3,6 +3,6 @@ import MortgageController from '../controller/home_mortgage/post/MortgageControl
 
 const router = Router();
 
-router.post('/calculate', MortgageController.calculateMortgage);
+router.get('/calculate', MortgageController.getMortgageCalculation);
 
 export default router;
