@@ -1,9 +1,8 @@
 import { Router } from 'express';
+import MortgageController from '../controller/home_mortgage/post/MortgageController';
 
 const router = Router();
 
-router.get('/', (req, res) => res.status(200).send({
-    message: 'temp page',
-  }));
+router.post('/calculate', MortgageController.calculateMortgage);
 
 export default router;
