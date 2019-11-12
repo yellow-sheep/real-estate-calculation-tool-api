@@ -1,0 +1,10 @@
+{
+    "dev": {
+      "driver": "pg",
+      "host": "localhost",
+      "port": "5432",
+      "user": "joey",
+      "password": "1234",
+      "database": "home_mortgage"
+    }
+  }
