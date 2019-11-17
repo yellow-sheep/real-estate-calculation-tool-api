@@ -31,6 +31,9 @@ exports.up = function (db, callback) {
     loan_term: {
       type: 'int'
     },
+    monthly_payment: {
+      type: 'decimal'
+    }
   }, function (err) {
     if (err) return callback(err);
     return callback();
