@@ -24,19 +24,42 @@ class MortgageController {
     }
 
     static async saveMortgageCalculation(req, res) {
-        const {property_name, property_value, down_payment, interest_rate, loan_term, monthly_payment} = req.body
+        const { property_name, property_value, down_payment, interest_rate, loan_term, monthly_payment } = req.body
 
         if (!property_value || !down_payment || !interest_rate || !loan_term || !monthly_payment) {
             util.setError(500, `Please provide property_value (number), down_payment (number), interest_rate (decimal) and loan_term (years), monthly payments (decimal)`);
             return util.send(res)
         } else {
-            db.query('INSERT INTO mortgage (property_name, property_value, down_payment, interest_rate, loan_term, monthly_payment) VALUES ($1, $2, $3, $4, $5, $6)', 
-            [property_name, property_value, down_payment, interest_rate, loan_term, monthly_payment], (error)=>{
+            db.query('INSERT INTO mortgage (property_name, property_value, down_payment, interest_rate, loan_term, monthly_payment) VALUES ($1, $2, $3, $4, $5, $6)',
+                [property_name, property_value, down_payment, interest_rate, loan_term, monthly_payment], (error) => {
+                    if (error) {
+                        util.setError(500, `Error saving property: ${property_name}`)
+                    } else {
+                        res.status(201).send(`Property saved for: ${property_name}`)
+                    }
+                })
+        }
+    }
+
+    static async getAllMortgageCalculations(req, res) {
+        db.query('SELECT * FROM mortgage ORDER BY id ASC', (error, results) => {
+            if (error) {
+                throw error
+            }
+            res.status(200).json(results.rows)
+        })
+    }
+
+    static async getMortgageCalculationById(req, res) {
+        const id = req.params.id
+        if (!req.params.id) {
+            util.setError(500, `Missing id params to get mortgage by Id`)
+        } else {
+            db.query('SELECT * FROM mortgage WHERE id = $1', [id], (error, results) => {
                 if (error) {
-                    util.setError(500, `Error saving property: ${property_name}`)
-                  } else {
-                    res.status(201).send(`Property saved for: ${property_name}`)
-                  }
+                    throw error
+                }
+                res.status(200).json(results.rows)
             })
         }
     }
